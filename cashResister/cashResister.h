@@ -30,6 +30,8 @@ namespace cashResister {
 		String^ name;
 		int amount;
 	private: System::Windows::Forms::Label^ totalP;
+	private: System::Windows::Forms::Button^ deleteBtn;
+
 	public:
 		double price;
 		
@@ -97,6 +99,7 @@ namespace cashResister {
 			this->pPrice = (gcnew System::Windows::Forms::Label());
 			this->FinellistBox = (gcnew System::Windows::Forms::ListBox());
 			this->totalP = (gcnew System::Windows::Forms::Label());
+			this->deleteBtn = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// productName
@@ -178,7 +181,7 @@ namespace cashResister {
 			this->ProductNextButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->ProductNextButton->ForeColor = System::Drawing::SystemColors::ControlText;
-			this->ProductNextButton->Location = System::Drawing::Point(34, 279);
+			this->ProductNextButton->Location = System::Drawing::Point(30, 258);
 			this->ProductNextButton->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
 			this->ProductNextButton->Name = L"ProductNextButton";
 			this->ProductNextButton->Size = System::Drawing::Size(120, 26);
@@ -193,7 +196,7 @@ namespace cashResister {
 			this->submitButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->submitButton->ForeColor = System::Drawing::SystemColors::ControlText;
-			this->submitButton->Location = System::Drawing::Point(164, 279);
+			this->submitButton->Location = System::Drawing::Point(111, 303);
 			this->submitButton->Margin = System::Windows::Forms::Padding(4, 3, 4, 3);
 			this->submitButton->Name = L"submitButton";
 			this->submitButton->Size = System::Drawing::Size(110, 25);
@@ -305,12 +308,26 @@ namespace cashResister {
 			this->totalP->Text = L"Transaction Receipt:";
 			this->totalP->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			// 
+			// deleteBtn
+			// 
+			this->deleteBtn->BackColor = System::Drawing::SystemColors::Highlight;
+			this->deleteBtn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->deleteBtn->Location = System::Drawing::Point(176, 261);
+			this->deleteBtn->Name = L"deleteBtn";
+			this->deleteBtn->Size = System::Drawing::Size(130, 23);
+			this->deleteBtn->TabIndex = 14;
+			this->deleteBtn->Text = L"Delete";
+			this->deleteBtn->UseVisualStyleBackColor = false;
+			this->deleteBtn->Click += gcnew System::EventHandler(this, &cashResister::deleteBtn_Click);
+			// 
 			// cashResister
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::MenuHighlight;
 			this->ClientSize = System::Drawing::Size(1191, 340);
+			this->Controls->Add(this->deleteBtn);
 			this->Controls->Add(this->totalP);
 			this->Controls->Add(this->FinellistBox);
 			this->Controls->Add(this->pName);
@@ -343,12 +360,23 @@ namespace cashResister {
 		String^ item = productName + "                         " + productAmount + "                       " + productPrice ;
 		
 		this->ProductlistBox->Items->Add(item);
-		
-		
-	
-
 
 	}
+	private: System::Void deleteBtn_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		String^ productName = this->ProductTextBox->Text;
+		String^ productAmount = this->AmountTextBox->Text;
+		String^ productPrice = this->PriceTextBox->Text;
+
+
+		String^ item = productName + "                         " + productAmount + "                       " + productPrice;
+
+		this->ProductlistBox->Items->Remove(item);
+		ProductTextBox->Text = "";
+		AmountTextBox->Text = "";
+		PriceTextBox->Text = "";
+	}
+		  
 	private:
 		List<cashResister^>^ cart = gcnew List<cashResister^>();
 		
@@ -372,6 +400,7 @@ namespace cashResister {
 			   AmountTextBox->Text = "";
 			   PriceTextBox->Text = "";
 		   }
+		   
 		   private: void UpdateCart() {
 			   this->FinellistBox->Items->Clear();
 			   double total = 0;
